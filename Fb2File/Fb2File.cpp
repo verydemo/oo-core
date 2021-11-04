@@ -1503,7 +1503,7 @@ HRESULT CFb2File::Open(const std::wstring& sPath, const std::wstring& sDirectory
     // Вставляем основное тело
     oDocument += oBuilder.GetData();
     // Конец документа
-    oDocument += L"<w:sectPr><w:footnotePr/><w:type w:val=\"nextPage\"/><w:pgSz w:w=\"11906\" w:h=\"16838\" w:orient=\"portrait\"/><w:pgMar w:top=\"1134\" w:right=\"850\" w:bottom=\"1134\" w:left=\"1701\" w:header=\"709\" w:footer=\"709\" w:gutter=\"0\"/><w:cols w:num=\"1\" w:sep=\"0\" w:space=\"708\" w:equalWidth=\"1\"/><w:docGrid w:linePitch=\"360\"/></w:sectPr></w:body></w:document>";
+    oDocument += L"<w:sectPr><w:footnotePr/><w:type w:val=\"nextPage\"/><w:pgSz w:w=\"11906\" w:h=\"16838\" w:orient=\"portrait\"/><w:pgMar w:top=\"1134\" w:right=\"850\" w:bottom=\"1134\" w:left=\"1701\" w:header=\"709\" w:footer=\"709\" w:gutter=\"0\"/><w:cols w:num=\"1\" w:sep=\"0\" w:space=\"708\" w:equalWidth=\"1\"/><w:docGrid w:type=\"lines\" w:linePitch=\"360\"/></w:sectPr></w:body></w:document>";
     // Пишем документ в файл
     NSFile::CFileBinary oDocumentXmlWriter;
     if (oDocumentXmlWriter.CreateFileW(sDirectory + L"/word/document.xml"))
