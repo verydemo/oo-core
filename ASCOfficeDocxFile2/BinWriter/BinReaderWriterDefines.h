@@ -475,7 +475,8 @@ extern int g_nCurFormatVersion;
 		footnotePr = 10,
 		endnotePr = 11,
 		rtlGutter = 12,
-		lnNumType = 13
+		lnNumType = 13,
+		docGrid = 100
 	};}
 	namespace c_oSerProp_secPrSettingsType{enum c_oSerProp_secPrSettingsType
 	{
@@ -493,6 +494,12 @@ extern int g_nCurFormatVersion;
 		Distance = 1,
 		Restart = 2,
 		Start = 3
+	};}
+	namespace c_oSerProp_secPrDocGrid{enum c_oSerProp_secPrDocGrid
+	{
+		Type = 0,
+		LinePitch = 1,
+		CharSpace = 2
 	};}
 	namespace c_oSerParType{enum c_oSerParType
 	{
