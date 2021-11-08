@@ -1855,7 +1855,7 @@ int Binary_pPrReader::ReadDocGrid(BYTE type, long length, void* poResult)
 	else if( c_oSerProp_secPrDocGrid::CharSpace == type )
 	{
 		pDocGrid->m_oCharSpace.Init();
-		pDocGrid->m_oCharSpace->FromTwips(m_oBufferedStream.GetLong());
+		pDocGrid->m_oCharSpace->SetValue(m_oBufferedStream.GetLong());
 	}
 	else if( c_oSerProp_secPrDocGrid::Type == type )
 	{
