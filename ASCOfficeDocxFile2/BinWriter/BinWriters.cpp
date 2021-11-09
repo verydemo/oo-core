@@ -1400,7 +1400,7 @@ void Binary_pPrWriter::WriteSectPr (OOX::Logic::CSectionProperty* pSectPr)
 	if(pSectPr->m_oDocGrid.IsInit())
 	{
 		nCurPos = m_oBcw.WriteItemStart(c_oSerProp_secPrType::docGrid);
-			WriteDocGrid(pSectPr->m_oDocGrid);
+			WriteDocGrid(pSectPr->m_oDocGrid.get());
 		m_oBcw.WriteItemEnd(nCurPos);
 	}
 
