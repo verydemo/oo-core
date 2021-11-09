@@ -1859,7 +1859,7 @@ int Binary_pPrReader::ReadDocGrid(BYTE type, long length, void* poResult)
 	else if( c_oSerProp_secPrDocGrid::Type == type )
 	{
 		pDocGrid->m_oType.Init();
-		pDocGrid->m_oType->SetValue((SimpleTypes::EDocGrid)m_oBufferedStream.GetChar());
+		pDocGrid->m_oType->SetValue((SimpleTypes::EDocGrid)m_oBufferedStream.GetUChar());
 	}
 	else
 		res = c_oSerConstants::ReadUnknown;
