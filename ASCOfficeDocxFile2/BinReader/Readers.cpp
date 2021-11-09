@@ -1842,7 +1842,6 @@ int Binary_pPrReader::Read_lineNumType(BYTE type, long length, void* poResult)
 		res = c_oSerConstants::ReadUnknown;
 	return res;
 }
-// DocGrid 读取
 int Binary_pPrReader::ReadDocGrid(BYTE type, long length, void* poResult)
 {
 	ComplexTypes::Word::CDocGrid* pDocGrid = static_cast<ComplexTypes::Word::CDocGrid*>(poResult);
