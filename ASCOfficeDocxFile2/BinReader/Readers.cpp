@@ -1485,12 +1485,12 @@ int Binary_pPrReader::Read_SecPr(BYTE type, long length, void* poResult)
 		READ1_DEF(length, res, this->Read_lineNumType, &lineNumber);
 		pSectPr->lineNum = L"<w:lnNumType " + lineNumber.ToString() + L"/>";
 	}
-	else if( c_oSerProp_secPrType::docGrid == type )
-	{
-		ComplexTypes::Word::CDocGrid oDocGrid;
-		READ1_DEF(length, res, this->ReadDocGrid, &oDocGrid);
-		pSectPr->docGrid = L"<w:docGrid " + oDocGrid.ToString() + L"/>";
-	}
+	// else if( c_oSerProp_secPrType::docGrid == type )
+	// {
+	// 	ComplexTypes::Word::CDocGrid oDocGrid;
+	// 	READ1_DEF(length, res, this->ReadDocGrid, &oDocGrid);
+	// 	pSectPr->docGrid = L"<w:docGrid " + oDocGrid.ToString() + L"/>";
+	// }
 	else if( c_oSerProp_secPrType::sectPrChange == type )
 	{
 		TrackRevision sectPrChange;
