@@ -63,6 +63,7 @@ public:
     std::wstring footnotePr;
     std::wstring endnotePr;
 	std::wstring lineNum;
+	std::wstring docGrid;
 	bool RtlGutter;
 	long Gutter;
 
