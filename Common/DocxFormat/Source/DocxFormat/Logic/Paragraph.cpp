@@ -70,6 +70,7 @@ namespace OOX
             XmlMacroReadAttributeBase( oNode, _T("w:rsidR"),        m_oRsidR );
             XmlMacroReadAttributeBase( oNode, _T("w:rsidRDefault"), m_oRsidRDefault );
             XmlMacroReadAttributeBase( oNode, _T("w:rsidRPr"),      m_oRsidRPr );
+            XmlMacroReadAttributeBase( oNode, _T("paraTag"),        m_oParaTag );
 
 			XmlUtils::CXmlNodes oChilds;
 			if ( oNode.GetNodes( _T("*"), oChilds ) )
@@ -326,6 +327,7 @@ namespace OOX
 			ComplexTypes_WriteAttribute( _T("w:rsidRPr=\""),      m_oRsidRPr );
 			ComplexTypes_WriteAttribute( _T("w14:paraId=\""),     m_oParaId );
 			ComplexTypes_WriteAttribute( _T("w14:textId=\""),     m_oTextId );
+			ComplexTypes_WriteAttribute( _T("paraTag=\""),           m_oParaTag );
 
 			sResult += _T(">");
 
@@ -360,6 +362,7 @@ namespace OOX
 			WritingElement_ReadAttributes_Read_else_if( oReader, _T("w:rsidRPr"),      m_oRsidRPr )
 			WritingElement_ReadAttributes_Read_else_if( oReader, _T("w14:paraId"),		m_oParaId )
 			WritingElement_ReadAttributes_Read_else_if( oReader, _T("w14:textId"),      m_oTextId )
+			WritingElement_ReadAttributes_Read_else_if( oReader, _T("paraTag"),         m_oParaTag )
 
 			WritingElement_ReadAttributes_End( oReader )
 		}

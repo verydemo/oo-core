@@ -530,7 +530,8 @@ extern int g_nCurFormatVersion;
 		BookmarkEnd = 24,
 		MRun = 25,
 		AltChunk = 26,
-		DocParts = 27
+		DocParts = 27,
+		pTag = 100
 	};}
 	namespace c_oSerGlossary {
 		enum c_oSerGlossary

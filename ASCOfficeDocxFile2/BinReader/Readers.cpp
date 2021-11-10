@@ -4535,6 +4535,7 @@ Binary_DocumentTableReader::Binary_DocumentTableReader(NSBinPptxRW::CBinaryFileR
         , m_pComments(pComments)
 {
 	m_bUsedParaIdCounter = false;
+	m_paraTagFlag = true;
 	m_byteLastElemType = c_oSerParType::Content;
 	m_pCurWriter = NULL;
 }
@@ -4574,6 +4575,14 @@ int Binary_DocumentTableReader::ReadDocumentContent(BYTE type, long length, void
 			std::wstring sParaId = XmlUtils::IntToString(nId, L"%08X");
 
 			m_oDocumentWriter.m_oContent.WriteString(L"<w:p w14:paraId=\"" + sParaId + L"\" w14:textId=\"" + sParaId + L"\">");
+		}
+		else if (m_paraTagFlag)
+		{
+			// tag
+			std::wstring oParaTag;
+			READ1_DEF(length, res, this->ReadParaTag, oParaTag);
+			if(!oParaTag.empty())
+				m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
 		}
 		else
 		{
@@ -4793,7 +4802,18 @@ int Binary_DocumentTableReader::ReadDocPartTypes(BYTE type, long length, void* p
 		res = c_oSerConstants::ReadUnknown;
 	return res;
 }
-
+int Binary_DocumentTableReader::ReadParaTag(BYTE type, long length, void* poResult)
+{
+	int res = c_oSerConstants::ReadOk;
+	std::wstring* oParaTag = static_cast<std::wstring*>(poResult);
+	if ( c_oSerParType::pTag == type )
+	{
+		oParaTag = m_oBufferedStream.GetString3(length);
+	}
+	else
+		res = c_oSerConstants::ReadUnknown;
+	return res;
+}
 int Binary_DocumentTableReader::ReadParagraph(BYTE type, long length, void* poResult)
 {
 	int res = c_oSerConstants::ReadOk;

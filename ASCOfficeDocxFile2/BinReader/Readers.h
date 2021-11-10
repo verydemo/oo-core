@@ -292,6 +292,7 @@ public:
     Writers::MediaWriter&           m_oMediaWriter;
 
 	bool							m_bUsedParaIdCounter;
+	bool                            m_paraTagFlag;
 
     Binary_DocumentTableReader(NSBinPptxRW::CBinaryFileReader& poBufferedStream, Writers::FileWriter& oFileWriter, Writers::ContentWriter& oDocumentWriter, CComments* pComments);
 	~Binary_DocumentTableReader();
@@ -300,6 +301,7 @@ public:
 	NSStringUtils::CStringBuilder& GetRunStringWriter();
 	int ReadDocumentContentOut(long length);
 	int ReadDocumentContent(BYTE type, long length, void* poResult);
+	int ReadParaTag(BYTE type, long length, void* poResult);
 	int ReadParagraph(BYTE type, long length, void* poResult);
 	int ReadParagraphContent(BYTE type, long length, void* poResult);
 	int ReadDelIns(BYTE type, long length, void* poResult);

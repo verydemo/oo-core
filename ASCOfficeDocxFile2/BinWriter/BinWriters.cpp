@@ -3267,7 +3267,7 @@ void BinaryDocumentTableWriter::WriteDocumentContent(const std::vector<OOX::Writ
 			{
 				OOX::Logic::CParagraph* pParagraph = static_cast<OOX::Logic::CParagraph*>(item);
 				OOX::Logic::CParagraphProperty* pPr = pParagraph->m_oParagraphProperty;
-
+				
 				m_oBcw.m_oStream.WriteBYTE(c_oSerParType::Par);
 					nCurPos = m_oBcw.WriteItemWithLengthStart();
 					WriteParapraph(*pParagraph, pPr);
@@ -3601,6 +3601,14 @@ void BinaryDocumentTableWriter::WriteAltChunk(OOX::Media& oAltChunkFile, OOX::CS
 void BinaryDocumentTableWriter::WriteParapraph(OOX::Logic::CParagraph& par, OOX::Logic::CParagraphProperty* pPr)
 {
 	int nCurPos = 0;
+// tag
+	if(par->m_oParaTag.IsInit())
+	{
+		nCurPos = m_oBcw.WriteItemStart(c_oSerParType::pTag);
+			m_oBcw.m_oStream.WriteStringW3(par->m_oParaTag->GetValue());
+		m_oBcw.WriteItemWithLengthEnd(nCurPos);
+	}
+
 //pPr
 	if(NULL != pPr)
 	{
