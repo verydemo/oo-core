@@ -7871,6 +7871,14 @@ int Binary_DocumentTableReader::ReadRunContent(BYTE type, long length, void* poR
 
 			m_oDocumentWriter.m_oContent.WriteString(L"<w:p w14:paraId=\"" + sParaId + L"\" w14:textId=\"" + sParaId + L"\">");
 		}
+		else if (m_paraTagFlag)
+		{
+			// tag
+			std::wstring oParaTag;
+			READ1_DEF(length, res, this->ReadParaTag, oParaTag);
+			if(!oParaTag.empty())
+				m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
+		}
 		else
 		{
 			m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
