@@ -4581,7 +4581,7 @@ int Binary_DocumentTableReader::ReadDocumentContent(BYTE type, long length, void
 			// tag
 			nullable_string oParaTag;
 			READ1_DEF(length, res, this->ReadParaTag, oParaTag);
-			if(!oParaTag.empty())
+			if(NULL != oParaTag)
 				m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
 		}
 		else
@@ -7876,7 +7876,7 @@ int Binary_DocumentTableReader::ReadRunContent(BYTE type, long length, void* poR
 			// tag
 			nullable_string oParaTag;
 			READ1_DEF(length, res, this->ReadParaTag, oParaTag);
-			if(!oParaTag.empty())
+			if(NULL != m_oParaTag)
 				m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
 		}
 		else

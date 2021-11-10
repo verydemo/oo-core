@@ -3602,7 +3602,7 @@ void BinaryDocumentTableWriter::WriteParapraph(OOX::Logic::CParagraph& par, OOX:
 {
 	int nCurPos = 0;
 // tag
-	if(!par.m_oParaTag.empty())
+	if(NULL != par.m_oParaTag)
 	{
 		nCurPos = m_oBcw.WriteItemStart(c_oSerParType::pTag);
 			m_oBcw.m_oStream.WriteStringW3(par.m_oParaTag.get());
