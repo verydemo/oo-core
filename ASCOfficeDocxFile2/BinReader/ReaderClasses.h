@@ -82,6 +82,7 @@ public:
 	bool bPageNumStart;
 	bool bRtlGutter;
 	bool bGutter;
+	bool bDocGrid;
 	SectPr()
 	{
 		sHeaderFooterReference = _T("");
@@ -102,6 +103,7 @@ public:
 		bPageNumStart = false;
 		bRtlGutter = false;
 		bGutter = false;
+		bDocGrid = true;
 	}
     std::wstring Write()
 	{
@@ -183,7 +185,9 @@ public:
 
         if(!cols.empty())
             sRes += cols;
-        sRes += L"<w:docGrid w:linePitch=\"360\"/>";
+        // sRes += L"<w:docGrid w:linePitch=\"360\"/>";
+		if(!docGrid.empty())
+			sRes += docGrid;
 
         if(bTitlePg && TitlePg)
             sRes += L"<w:titlePg/>";
