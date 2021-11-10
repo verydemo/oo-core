@@ -132,7 +132,7 @@ namespace OOX
 			nullable<SimpleTypes::CLongHexNumber<> > m_oRsidR;
 			nullable<SimpleTypes::CLongHexNumber<> > m_oRsidRDefault;
 			nullable<SimpleTypes::CLongHexNumber<> > m_oRsidRPr;
-			nullable<std::wstring> m_oParaTag;
+			nullable_string m_oParaTag;
 
 			CParagraphProperty *m_oParagraphProperty; // копия того что в m_arrItems...  - для быстрого доступа/анализа
 			// по идее нужно сделать как в Drawing::Paragraph - то есть единственные подобъекты вынести отдельно
