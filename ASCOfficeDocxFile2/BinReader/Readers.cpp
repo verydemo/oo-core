@@ -4809,6 +4809,7 @@ int Binary_DocumentTableReader::ReadParaTag(BYTE type, long length, void* poResu
 	if ( c_oSerParType::pTag == type )
 	{
 		std::wstring tag = m_oBufferedStream.GetString3(length);
+		std::cout << "tag: " << tag << <<std::endl;
 		oParaTag = &tag;
 	}
 	else
