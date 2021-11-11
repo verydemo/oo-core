@@ -301,7 +301,7 @@ public:
 	NSStringUtils::CStringBuilder& GetRunStringWriter();
 	int ReadDocumentContentOut(long length);
 	int ReadDocumentContent(BYTE type, long length, void* poResult);
-	int ReadParaTag(BYTE type, long length, void* poResult);
+	// int ReadParaTag(BYTE type, long length, void* poResult);
 	int ReadParagraph(BYTE type, long length, void* poResult);
 	int ReadParagraphContent(BYTE type, long length, void* poResult);
 	int ReadDelIns(BYTE type, long length, void* poResult);
