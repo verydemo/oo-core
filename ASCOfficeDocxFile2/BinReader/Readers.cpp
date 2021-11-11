@@ -7898,7 +7898,7 @@ int Binary_DocumentTableReader::ReadRunContent(BYTE type, long length, void* poR
 			// READ1_DEF(length, res, this->ReadParaTag, &oParaTag);
 			BYTE read1defType = 0;
 			long read1defCurPos = 0;
-			m_oBufferedStream.GetUCharWithResult(&read1defType)
+			m_oBufferedStream.GetUCharWithResult(&read1defType);
 			long nCurPos = m_oBufferedStream.GetPos();
 			if( c_oSerParType::pTag == read1defType)
 			{
