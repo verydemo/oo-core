@@ -4579,15 +4579,28 @@ int Binary_DocumentTableReader::ReadDocumentContent(BYTE type, long length, void
 		else if (m_paraTagFlag)
 		{
 			// tag
-			std::wstring oParaTag;
-			READ1_DEF(length, res, this->ReadParaTag, &oParaTag);
-			if(!oParaTag.empty())
+			// std::wstring oParaTag;
+			// READ1_DEF(length, res, this->ReadParaTag, &oParaTag);
+			BYTE read1defType = 0;
+			long read1defCurPos = 0;
+			m_oBufferedStream.GetUCharWithResult(&read1defType)
+			long nCurPos = m_oBufferedStream.GetPos();
+			if( c_oSerParType::pTag == read1defType)
 			{
-				m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
+				long read1defLength =  m_oBufferedStream.GetLong();
+				std::wstring oParaTag = m_oBufferedStream.GetString3(read1defLength);
+				if(!oParaTag.empty())
+				{
+					m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
+				}
+				else
+				{
+					m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
+				}
 			}
 			else
 			{
-				m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
+				m_oBufferedStream.Seek(nCurPos - 1);
 			}
 		}
 		else
@@ -7881,15 +7894,28 @@ int Binary_DocumentTableReader::ReadRunContent(BYTE type, long length, void* poR
 		else if (m_paraTagFlag)
 		{
 			// tag
-			std::wstring oParaTag;
-			READ1_DEF(length, res, this->ReadParaTag, &oParaTag);
-			if(!oParaTag.empty())
+			// std::wstring oParaTag;
+			// READ1_DEF(length, res, this->ReadParaTag, &oParaTag);
+			BYTE read1defType = 0;
+			long read1defCurPos = 0;
+			m_oBufferedStream.GetUCharWithResult(&read1defType)
+			long nCurPos = m_oBufferedStream.GetPos();
+			if( c_oSerParType::pTag == read1defType)
 			{
-				m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
+				long read1defLength =  m_oBufferedStream.GetLong();
+				std::wstring oParaTag = m_oBufferedStream.GetString3(read1defLength);
+				if(!oParaTag.empty())
+				{
+					m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
+				}
+				else
+				{
+					m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
+				}
 			}
 			else
 			{
-				m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
+				m_oBufferedStream.Seek(nCurPos - 1);
 			}
 		}
 		else
