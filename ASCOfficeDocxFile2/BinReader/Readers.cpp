@@ -7915,7 +7915,7 @@ int Binary_DocumentTableReader::ReadRunContent(BYTE type, long length, void* poR
 			}
 			else
 			{
-				m_oBufferedStream.Seek(nCurPos - 1);
+				m_oBufferedStream.Seek(nCurPos);
 			}
 		}
 		else
