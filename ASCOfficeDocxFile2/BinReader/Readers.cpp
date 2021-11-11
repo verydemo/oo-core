@@ -4569,43 +4569,34 @@ int Binary_DocumentTableReader::ReadDocumentContent(BYTE type, long length, void
 		m_byteLastElemType = c_oSerParType::Par;
 		m_oCur_pPr.ClearNoAttack();
 
-		if (m_bUsedParaIdCounter && m_pComments)
-		{
-			int nId = m_pComments->m_oParaIdCounter.getNextId();
-			std::wstring sParaId = XmlUtils::IntToString(nId, L"%08X");
+		// if (m_bUsedParaIdCounter && m_pComments)
+		// {
+		// 	int nId = m_pComments->m_oParaIdCounter.getNextId();
+		// 	std::wstring sParaId = XmlUtils::IntToString(nId, L"%08X");
 
-			m_oDocumentWriter.m_oContent.WriteString(L"<w:p w14:paraId=\"" + sParaId + L"\" w14:textId=\"" + sParaId + L"\">");
-		}
-		else if (m_paraTagFlag)
+		// 	m_oDocumentWriter.m_oContent.WriteString(L"<w:p w14:paraId=\"" + sParaId + L"\" w14:textId=\"" + sParaId + L"\">");
+		// }
+		// else
+		// {
+		// 	m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
+		// }
+		BYTE read1defType = 0;
+		long nCurPos = m_oBufferedStream.GetPos();
+		m_oBufferedStream.GetUCharWithResult(&read1defType);
+		if( c_oSerParType::pTag == read1defType)
 		{
-			// tag
-			// std::wstring oParaTag;
-			// READ1_DEF(length, res, this->ReadParaTag, &oParaTag);
-			BYTE read1defType = 0;
-			long nCurPos = m_oBufferedStream.GetPos();
-			m_oBufferedStream.GetUCharWithResult(&read1defType);
-			if( c_oSerParType::pTag == read1defType)
+			long read1defLength =  m_oBufferedStream.GetLong();
+			std::wstring oParaTag = m_oBufferedStream.GetString3(read1defLength);
+			if(!oParaTag.empty())
 			{
-				long read1defLength =  m_oBufferedStream.GetLong();
-				std::wstring oParaTag = m_oBufferedStream.GetString3(read1defLength);
-				if(!oParaTag.empty())
-				{
-					m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
-				}
-				else
-				{
-					m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
-				}
+				m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
 			}
 			else
 			{
-				m_oBufferedStream.Seek(nCurPos);
+				m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
 			}
 		}
-		else
-		{
-			m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
-		}
+		m_oBufferedStream.Seek(nCurPos);
 		READ1_DEF(length, res, this->ReadParagraph, NULL);
         m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"</w:p>"));
 	}
@@ -7883,43 +7874,34 @@ int Binary_DocumentTableReader::ReadRunContent(BYTE type, long length, void* poR
 		READ1_DEF(length, res, this->ReadDocTable, &m_oDocumentWriter.m_oContent);
         m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"</w:tbl>"));
 
-		if (m_bUsedParaIdCounter && m_pComments)
-		{
-			int nId = m_pComments->m_oParaIdCounter.getNextId();
-			std::wstring sParaId = XmlUtils::IntToString(nId, L"%08X");
+		// if (m_bUsedParaIdCounter && m_pComments)
+		// {
+		// 	int nId = m_pComments->m_oParaIdCounter.getNextId();
+		// 	std::wstring sParaId = XmlUtils::IntToString(nId, L"%08X");
 
-			m_oDocumentWriter.m_oContent.WriteString(L"<w:p w14:paraId=\"" + sParaId + L"\" w14:textId=\"" + sParaId + L"\">");
-		}
-		else if (m_paraTagFlag)
+		// 	m_oDocumentWriter.m_oContent.WriteString(L"<w:p w14:paraId=\"" + sParaId + L"\" w14:textId=\"" + sParaId + L"\">");
+		// }
+		// else
+		// {
+		// 	m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
+		// }
+		BYTE read1defType = 0;
+		long nCurPos = m_oBufferedStream.GetPos();
+		m_oBufferedStream.GetUCharWithResult(&read1defType);
+		if( c_oSerParType::pTag == read1defType)
 		{
-			// tag
-			// std::wstring oParaTag;
-			// READ1_DEF(length, res, this->ReadParaTag, &oParaTag);
-			BYTE read1defType = 0;
-			long nCurPos = m_oBufferedStream.GetPos();
-			m_oBufferedStream.GetUCharWithResult(&read1defType);
-			if( c_oSerParType::pTag == read1defType)
+			long read1defLength =  m_oBufferedStream.GetLong();
+			std::wstring oParaTag = m_oBufferedStream.GetString3(read1defLength);
+			if(!oParaTag.empty())
 			{
-				long read1defLength =  m_oBufferedStream.GetLong();
-				std::wstring oParaTag = m_oBufferedStream.GetString3(read1defLength);
-				if(!oParaTag.empty())
-				{
-					m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
-				}
-				else
-				{
-					m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
-				}
+				m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
 			}
 			else
 			{
-				m_oBufferedStream.Seek(nCurPos);
+				m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
 			}
 		}
-		else
-		{
-			m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
-		}
+		m_oBufferedStream.Seek(nCurPos);
         if(m_oCur_pPr.GetCurSize() > 0)
 		{
             m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:pPr>"));
