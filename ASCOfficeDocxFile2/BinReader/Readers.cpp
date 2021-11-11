@@ -4582,9 +4582,8 @@ int Binary_DocumentTableReader::ReadDocumentContent(BYTE type, long length, void
 			// std::wstring oParaTag;
 			// READ1_DEF(length, res, this->ReadParaTag, &oParaTag);
 			BYTE read1defType = 0;
-			long read1defCurPos = 0;
-			m_oBufferedStream.GetUCharWithResult(&read1defType);
 			long nCurPos = m_oBufferedStream.GetPos();
+			m_oBufferedStream.GetUCharWithResult(&read1defType);
 			if( c_oSerParType::pTag == read1defType)
 			{
 				long read1defLength =  m_oBufferedStream.GetLong();
@@ -7897,9 +7896,8 @@ int Binary_DocumentTableReader::ReadRunContent(BYTE type, long length, void* poR
 			// std::wstring oParaTag;
 			// READ1_DEF(length, res, this->ReadParaTag, &oParaTag);
 			BYTE read1defType = 0;
-			long read1defCurPos = 0;
-			m_oBufferedStream.GetUCharWithResult(&read1defType);
 			long nCurPos = m_oBufferedStream.GetPos();
+			m_oBufferedStream.GetUCharWithResult(&read1defType);
 			if( c_oSerParType::pTag == read1defType)
 			{
 				long read1defLength =  m_oBufferedStream.GetLong();
