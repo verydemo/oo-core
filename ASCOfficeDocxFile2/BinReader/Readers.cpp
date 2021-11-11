@@ -4582,7 +4582,13 @@ int Binary_DocumentTableReader::ReadDocumentContent(BYTE type, long length, void
 			std::wstring oParaTag;
 			READ1_DEF(length, res, this->ReadParaTag, &oParaTag);
 			if(!oParaTag.empty())
+			{
 				m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
+			}
+			else
+			{
+				m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
+			}
 		}
 		else
 		{
@@ -4809,7 +4815,7 @@ int Binary_DocumentTableReader::ReadParaTag(BYTE type, long length, void* poResu
 	if ( c_oSerParType::pTag == type )
 	{
 		std::wstring tag = m_oBufferedStream.GetString3(length);
-		oParaTag = &tag;
+		*oParaTag = tag;
 	}
 	else
 		res = c_oSerConstants::ReadUnknown;
@@ -7878,7 +7884,13 @@ int Binary_DocumentTableReader::ReadRunContent(BYTE type, long length, void* poR
 			std::wstring oParaTag;
 			READ1_DEF(length, res, this->ReadParaTag, &oParaTag);
 			if(!oParaTag.empty())
+			{
 				m_oDocumentWriter.m_oContent.WriteString(L"<w:p paraTag=\"" + oParaTag + L"\">");
+			}
+			else
+			{
+				m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
+			}
 		}
 		else
 		{
