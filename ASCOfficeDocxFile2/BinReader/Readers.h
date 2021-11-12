@@ -131,6 +131,7 @@ public:
 	int Read_pgFooter(BYTE type, long length, void* poResult);
 	int Read_pageNumType(BYTE type, long length, void* poResult);
 	int Read_lineNumType(BYTE type, long length, void* poResult);
+	int ReadDocGrid(BYTE type, long length, void* poResult);
 	int ReadCols(BYTE type, long length, void* poResult);
 	int ReadCol(BYTE type, long length, void* poResult);
 	int ReadPageBorders(BYTE type, long length, void* poResult);
@@ -291,6 +292,7 @@ public:
     Writers::MediaWriter&           m_oMediaWriter;
 
 	bool							m_bUsedParaIdCounter;
+	bool                            m_paraTagFlag;
 
     Binary_DocumentTableReader(NSBinPptxRW::CBinaryFileReader& poBufferedStream, Writers::FileWriter& oFileWriter, Writers::ContentWriter& oDocumentWriter, CComments* pComments);
 	~Binary_DocumentTableReader();
@@ -299,6 +301,7 @@ public:
 	NSStringUtils::CStringBuilder& GetRunStringWriter();
 	int ReadDocumentContentOut(long length);
 	int ReadDocumentContent(BYTE type, long length, void* poResult);
+	int ReadParaTag(BYTE type, long length, void* poResult);
 	int ReadParagraph(BYTE type, long length, void* poResult);
 	int ReadParagraphContent(BYTE type, long length, void* poResult);
 	int ReadDelIns(BYTE type, long length, void* poResult);
