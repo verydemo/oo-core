@@ -4,11 +4,11 @@
 
 * debug模式
   ```
-  make -f build.makefile_linux_64 -j 8
+  make -f build_debug.makefile_linux_64 -j 8
   ```
 * relase模式
   ```
-  make -f build——debug.makefile_linux_64 -j 8
+  make -f build.makefile_linux_64 -j 8
   ```
 
 #### core 代码调试
