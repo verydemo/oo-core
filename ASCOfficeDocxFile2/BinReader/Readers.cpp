@@ -4596,6 +4596,10 @@ int Binary_DocumentTableReader::ReadDocumentContent(BYTE type, long length, void
 				m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
 			}
 		}
+		else
+		{
+			m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
+		}
 		m_oBufferedStream.Seek(nCurPos);
 		READ1_DEF(length, res, this->ReadParagraph, NULL);
         m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"</w:p>"));
@@ -7900,6 +7904,10 @@ int Binary_DocumentTableReader::ReadRunContent(BYTE type, long length, void* poR
 			{
 				m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
 			}
+		}
+		else
+		{
+			m_oDocumentWriter.m_oContent.WriteString(std::wstring(L"<w:p>"));
 		}
 		m_oBufferedStream.Seek(nCurPos);
         if(m_oCur_pPr.GetCurSize() > 0)
