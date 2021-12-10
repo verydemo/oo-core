@@ -14,18 +14,18 @@ void CStyles::SetDefoult()
     CElement *oRPr = new CElement(L"rPr", L"", L"w");
 
     CElement *oRFonts = new CElement(L"rFonts", L"", L"w");
-    oRFonts->AddArgument(L"asciiTheme", L"minorHAnsi");
-    oRFonts->AddArgument(L"eastAsiaTheme", L"minorEastAsia");
-    oRFonts->AddArgument(L"hAnsiTheme", L"minorHAnsi");
-    oRFonts->AddArgument(L"cstheme", L"minorBidi");
+    // oRFonts->AddArgument(L"asciiTheme", L"minorHAnsi");
+    // oRFonts->AddArgument(L"eastAsiaTheme", L"minorEastAsia");
+    // oRFonts->AddArgument(L"hAnsiTheme", L"minorHAnsi");
+    // oRFonts->AddArgument(L"cstheme", L"minorBidi");
     oRPr->AddChildren(oRFonts);
 
     CElement *oSz = new CElement(L"sz", L"", L"w");
-    oSz->AddArgument(L"val", L"22");
+    // oSz->AddArgument(L"val", L"22");
     oRPr->AddChildren(oSz);
 
     CElement *oSzCs = new CElement(L"sz", L"", L"w");
-    oSzCs->AddArgument(L"val", L"22");
+    // oSzCs->AddArgument(L"val", L"22");
     oRPr->AddChildren(oSzCs);
 
     CElement *oLang = new CElement(L"lang", L"", L"w");
