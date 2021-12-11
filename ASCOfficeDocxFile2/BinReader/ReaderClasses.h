@@ -681,6 +681,7 @@ public:
 			if(!FontAsciiTheme.empty())
 			{
 				sFont += L" w:asciiTheme=\"" + FontAsciiTheme + L"\"";
+				printf("FontAsciiTheme: %s\n",FontAsciiTheme);
 			}
 			if(!FontHAnsiTheme.empty())
 			{
