@@ -681,7 +681,7 @@ public:
 			if(!FontAsciiTheme.empty())
 			{
 				sFont += L" w:asciiTheme=\"" + FontAsciiTheme + L"\"";
-				printf("FontAsciiTheme: %s\n",FontAsciiTheme);
+				std::cout << "FontAsciiTheme:" << FontAsciiTheme << std::endl;
 			}
 			if(!FontHAnsiTheme.empty())
 			{
