@@ -37,6 +37,7 @@
 #include "../../Common/DocxFormat/Source/Common/SimpleTypes_Word.h"
 
 #include <boost/algorithm/string.hpp>
+#include <iostream>
 
 namespace BinDocxRW {
 
