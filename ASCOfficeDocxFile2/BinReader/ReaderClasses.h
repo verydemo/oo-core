@@ -655,7 +655,7 @@ public:
 		{
             pCStringWriter->WriteString(L"<w:rStyle w:val=\"" + RStyle + L"\"/>");
 		}
-		if(bFontAscii || bFontHAnsi || bFontAE || bFontCS || bFontHint || !FontAsciiTheme.empty() || !FontHAnsiTheme.empty() || !FontAETheme.empty() || !FontCSTheme.empty())
+		if(bFontAscii || bFontHAnsi || bFontAE || bFontCS || bFontHint)
 		{
             std::wstring sFont = _T("<w:rFonts");
 			if(bFontAscii)
@@ -678,22 +678,22 @@ public:
                 sFont += L" w:eastAsia=\"" + FontAE + L"\"";
 				m_mapFonts[FontAE] = 1;
 			}
-			if(!FontAsciiTheme.empty())
-			{
-				sFont += L" w:asciiTheme=\"" + FontAsciiTheme + L"\"";
-			}
-			if(!FontHAnsiTheme.empty())
-			{
-				sFont += L" w:hAnsiTheme=\"" + FontHAnsiTheme + L"\"";
-			}
-			if(!FontAETheme.empty())
-			{
-				sFont += L" w:eastAsiaTheme=\"" + FontAETheme + L"\"";
-			}
-			if(!FontCSTheme.empty())
-			{
-				sFont += L" w:cstheme=\"" + FontCSTheme + L"\"";
-			}
+			// if(!FontAsciiTheme.empty())
+			// {
+			// 	sFont += L" w:asciiTheme=\"" + FontAsciiTheme + L"\"";
+			// }
+			// if(!FontHAnsiTheme.empty())
+			// {
+			// 	sFont += L" w:hAnsiTheme=\"" + FontHAnsiTheme + L"\"";
+			// }
+			// if(!FontAETheme.empty())
+			// {
+			// 	sFont += L" w:eastAsiaTheme=\"" + FontAETheme + L"\"";
+			// }
+			// if(!FontCSTheme.empty())
+			// {
+			// 	sFont += L" w:cstheme=\"" + FontCSTheme + L"\"";
+			// }
 			if(bFontHint)
 			{
 				switch(FontHint)
