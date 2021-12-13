@@ -633,6 +633,15 @@ public:
 		ThemeColor.Reset();
 		bVanish = false;
 
+		FontAscii.clear();
+		FontHAnsi.clear();
+		FontAE.clear();
+		FontCS.clear();
+		FontAsciiTheme.clear();
+		FontHAnsiTheme.clear();
+		FontAETheme.clear();
+		FontCSTheme.clear();
+
 		nHighLight = 0; //not set
 		Outline.clear();
         Fill.clear();
