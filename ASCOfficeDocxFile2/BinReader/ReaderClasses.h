@@ -687,22 +687,22 @@ public:
                 sFont += L" w:eastAsia=\"" + FontAE + L"\"";
 				m_mapFonts[FontAE] = 1;
 			}
-			// if(!FontAsciiTheme.empty())
-			// {
-			// 	sFont += L" w:asciiTheme=\"" + FontAsciiTheme + L"\"";
-			// }
-			// if(!FontHAnsiTheme.empty())
-			// {
-			// 	sFont += L" w:hAnsiTheme=\"" + FontHAnsiTheme + L"\"";
-			// }
-			// if(!FontAETheme.empty())
-			// {
-			// 	sFont += L" w:eastAsiaTheme=\"" + FontAETheme + L"\"";
-			// }
-			// if(!FontCSTheme.empty())
-			// {
-			// 	sFont += L" w:cstheme=\"" + FontCSTheme + L"\"";
-			// }
+			if(!FontAsciiTheme.empty())
+			{
+				sFont += L" w:asciiTheme=\"" + FontAsciiTheme + L"\"";
+			}
+			if(!FontHAnsiTheme.empty())
+			{
+				sFont += L" w:hAnsiTheme=\"" + FontHAnsiTheme + L"\"";
+			}
+			if(!FontAETheme.empty())
+			{
+				sFont += L" w:eastAsiaTheme=\"" + FontAETheme + L"\"";
+			}
+			if(!FontCSTheme.empty())
+			{
+				sFont += L" w:cstheme=\"" + FontCSTheme + L"\"";
+			}
 			if(bFontHint)
 			{
 				switch(FontHint)
@@ -812,8 +812,8 @@ public:
 		}
 		if(bFontSizeCs)
 		{
-			if(false == bFontSize)
-				pCStringWriter->WriteString(L"<w:sz w:val=\"" + std::to_wstring(FontSizeCs) + L"\"/>");
+			// if(false == bFontSize)
+			// 	pCStringWriter->WriteString(L"<w:sz w:val=\"" + std::to_wstring(FontSizeCs) + L"\"/>");
 			pCStringWriter->WriteString(L"<w:szCs w:val=\"" + std::to_wstring(FontSizeCs) + L"\"/>");
 		}
 		if(nHighLight > 0)
