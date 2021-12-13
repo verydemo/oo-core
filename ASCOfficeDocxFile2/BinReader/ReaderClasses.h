@@ -37,7 +37,6 @@
 #include "../../Common/DocxFormat/Source/Common/SimpleTypes_Word.h"
 
 #include <boost/algorithm/string.hpp>
-#include <iostream>
 
 namespace BinDocxRW {
 
@@ -682,7 +681,6 @@ public:
 			if(!FontAsciiTheme.empty())
 			{
 				sFont += L" w:asciiTheme=\"" + FontAsciiTheme + L"\"";
-				std::cout << "FontAsciiTheme:" << FontAsciiTheme << std::endl;
 			}
 			if(!FontHAnsiTheme.empty())
 			{
