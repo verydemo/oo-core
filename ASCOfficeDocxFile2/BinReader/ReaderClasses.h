@@ -2430,7 +2430,8 @@ public:
 				}
 				else
 				{
-					sXml += L"<wp:inline xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" \
+					sXml += L"<wp:inline \
+xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" \
 distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\"><wp:extent cx=\"" + std::to_wstring(Width) + L"\" cy=\"" + std::to_wstring(Height) + L"\"/>";
 				}
 
@@ -2502,15 +2503,19 @@ distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\"><wp:extent cx=\"" + std::to_wstr
 				{
 					sXml += L"<w:drawing>";
 				}
-                sXml += L"<wp:anchor xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\"\
-                             distT=\""      + std::to_wstring(emuDistT) +
-                        L"\" distB=\""      + std::to_wstring(emuDistB) +
-                        L"\" distL=\""      + std::to_wstring(emuDistL) +
-                        L"\" distR=\""      + std::to_wstring(emuDistR) +
-                        L"\" simplePos=\""  + std::to_wstring(nSimplePos) +
-                        L"\" relativeHeight=\"" + std::to_wstring(nRelativeHeight) +
-                        L"\" behindDoc=\""  + std::to_wstring(nBehindDoc) +
-                        L"\" locked=\"0\" layoutInCell=\"" + std::to_wstring(nLayoutInCell) + L"\" allowOverlap=\"1\">";
+                sXml += L"<wp:anchor \
+xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" \
+xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" \
+distT=\"" + std::to_wstring(emuDistT) + L"\" \
+distB=\"" + std::to_wstring(emuDistB) + L"\" \
+distL=\"" + std::to_wstring(emuDistL) + L"\" \
+distR=\"" + std::to_wstring(emuDistR) + L"\" \
+simplePos=\"" + std::to_wstring(nSimplePos) + L"\" \
+relativeHeight=\"" + std::to_wstring(nRelativeHeight) + L"\" \
+behindDoc=\"" + std::to_wstring(nBehindDoc) + L"\" \
+locked=\"0\" \
+layoutInCell=\"" + std::to_wstring(nLayoutInCell) + L"\" \
+allowOverlap=\"1\">";
 
                 __int64 emuX = 0;
                 if(bSimplePosX)
@@ -2719,6 +2724,7 @@ public:
     std::wstring TableCellSpacing;
 	std::wstring Caption;
 	std::wstring Description;
+	std::wstring Overlap;
 	bool IsEmpty()
 	{
         return Jc.empty() && TableInd.empty() && TableW.empty() && TableCellMar.empty() && TableBorders.empty() && Shd.empty() && tblpPr.empty()&& Style.empty() && Look.empty() && tblPrChange.empty() && TableCellSpacing.empty() && RowBandSize.empty() && ColBandSize.empty();
@@ -2735,7 +2741,9 @@ public:
             sRes += (RowBandSize);
         if(!ColBandSize.empty())
             sRes += (ColBandSize);
-        if(false == TableW.empty())
+		if (!Overlap.empty())
+			sRes += (Overlap);
+		if(false == TableW.empty())
             sRes += (TableW);
         if(false == Jc.empty())
             sRes += (Jc);

@@ -52,6 +52,7 @@
 #include "../DesktopEditor/graphics/pro/Image.h"
 
 #include "../UnicodeConverter/UnicodeConverter.h"
+#include "../Common/Network/FileTransporter/include/FileTransporter.h"
 
 #include "OnlineOfficeBinToPdf.h"
 
@@ -914,6 +915,7 @@ HRESULT CPdfRenderer::BrushRect(const INT& nVal, const double& dLeft, const doub
 	// Данными параметрами пользуемся, только если пришла команда EnableBrushRect, если команда не пришла, тогда
 	// ориентируемся на границы пата.
 	m_oBrush.SetBrushRect(nVal, dLeft, dTop, dWidth, dHeight);
+    m_oBrush.EnableBrushRect(1 == nVal ? true : false);
 	return S_OK;
 }
 HRESULT CPdfRenderer::BrushBounds(const double& dLeft, const double& dTop, const double& dWidth, const double& dHeight)
@@ -1222,8 +1224,22 @@ HRESULT CPdfRenderer::DrawPath(const LONG& lType)
 	if (bStroke)
 		UpdatePen();
 
+	std::wstring sTextureOldPath = L"";
+	std::wstring sTextureTmpPath = L"";
+
 	if (bFill || bEoFill)
+	{
+		if (c_BrushTypeTexture == m_oBrush.GetType())
+		{
+			sTextureOldPath = m_oBrush.GetTexturePath();
+			sTextureTmpPath = GetDownloadFile(sTextureOldPath);
+
+			if (!sTextureTmpPath.empty())
+				m_oBrush.SetTexturePath(sTextureTmpPath);
+		}
+
 		UpdateBrush();
+	}
 
 	if (!m_pShading)
 	{
@@ -1248,6 +1264,14 @@ HRESULT CPdfRenderer::DrawPath(const LONG& lType)
 	}
 
 	m_pPage->GrRestore();
+
+	if (!sTextureTmpPath.empty())
+	{
+		m_oBrush.SetTexturePath(sTextureOldPath);
+
+		if (NSFile::CFileBinary::Exists(sTextureTmpPath))
+			NSFile::CFileBinary::Remove(sTextureTmpPath);
+	}
 
 	return S_OK;
 }
@@ -1396,12 +1420,15 @@ HRESULT CPdfRenderer::DrawImage(IGrObject* pImage, const double& dX, const doubl
 
 	return S_OK;
 }
-HRESULT CPdfRenderer::DrawImageFromFile(const std::wstring& wsImagePath, const double& dX, const double& dY, const double& dW, const double& dH, const BYTE& nAlpha)
+HRESULT CPdfRenderer::DrawImageFromFile(const std::wstring& wsImagePathSrc, const double& dX, const double& dY, const double& dW, const double& dH, const BYTE& nAlpha)
 {
 	m_oCommandManager.Flush();
 
 	if (!IsPageValid())
 		return S_OK;
+
+	std::wstring sTempImagePath = GetDownloadFile(wsImagePathSrc);
+	std::wstring wsImagePath = sTempImagePath.empty() ? wsImagePathSrc : sTempImagePath;
 
 	Aggplus::CImage* pAggImage = NULL;
 
@@ -1428,18 +1455,17 @@ HRESULT CPdfRenderer::DrawImageFromFile(const std::wstring& wsImagePath, const d
 		pAggImage = new Aggplus::CImage(wsImagePath);
 	}
 
-	if (!pAggImage)
-		return S_FALSE;
+	HRESULT hRes = S_OK;
+	if (!pAggImage || !DrawImage(pAggImage, dX, dY, dW, dH, nAlpha))
+		hRes = S_FALSE;
 
-	if (!DrawImage(pAggImage, dX, dY, dW, dH, nAlpha))
-	{
+	if (NSFile::CFileBinary::Exists(sTempImagePath))
+		NSFile::CFileBinary::Remove(sTempImagePath);
+
+	if (pAggImage)
 		delete pAggImage;
-		return S_FALSE;
-	}
 
-	delete pAggImage;
-
-	return S_OK;
+	return hRes;
 }
 //----------------------------------------------------------------------------------------
 // Функции для выставления преобразования
@@ -2422,14 +2448,29 @@ void CPdfRenderer::UpdateBrush()
 		}
 
 		if (pImage)
-		{		
+		{
+			BYTE nAlpha = m_oBrush.GetTextureAlpha();
+			if (0xFF != nAlpha)
+				pImage->AddTransparency(nAlpha);
+
 			LONG lTextureMode = m_oBrush.GetTextureMode();
 
 			double dW = 10;
 			double dH = 10;
 
 			double dL, dR, dT, dB;
-			m_oPath.GetBounds(dL, dT, dR, dB);
+            CBrushState::TBrushRect& oRect = m_oBrush.GetBrushRect();
+            if (!oRect.bUse)
+            {
+                m_oPath.GetBounds(dL, dT, dR, dB);
+            }
+            else
+            {
+                dL = MM_2_PT(oRect.dLeft);
+                dB = MM_2_PT(m_dPageHeight - oRect.dTop);
+                dR = MM_2_PT(oRect.dLeft + oRect.dWidth);
+                dT = MM_2_PT(m_dPageHeight - oRect.dTop - oRect.dHeight);
+            }
 
 			double dXStepSpacing = 0, dYStepSpacing = 0;
 			if (c_BrushTextureModeStretch == lTextureMode)
@@ -2714,4 +2755,54 @@ void CPdfRenderer::AddLink(const unsigned int& unPage, const double& dX, const d
 	pDestination->SetXYZ(MM_2_PT(dDestX), pDestPage->GetHeight() - MM_2_PT(dDestY), 0);
 	CAnnotation* pAnnot = m_pDocument->CreateLinkAnnot(pCurPage, TRect(MM_2_PT(dX), pCurPage->GetHeight() - MM_2_PT(dY), MM_2_PT(dX + dW), m_pPage->GetHeight() - MM_2_PT(dY + dH)), pDestination);
 	pAnnot->SetBorderStyle(EBorderSubtype::border_subtype_Solid, 0);
+}
+
+bool CPdfRenderer::IsValid()
+{
+        return m_bValid;
+}
+bool CPdfRenderer::IsPageValid()
+{
+        if (!IsValid() || !m_pPage)
+            return false;
+
+        return true;
+}
+void CPdfRenderer::SetError()
+{
+        m_bValid = false;
+}
+
+std::wstring CPdfRenderer::GetDownloadFile(const std::wstring& sUrl)
+{
+    std::wstring::size_type n1 = sUrl.find(L"www.");
+    std::wstring::size_type n2 = sUrl.find(L"http://");
+    std::wstring::size_type n3 = sUrl.find(L"ftp://");
+    std::wstring::size_type n4 = sUrl.find(L"https://");
+    std::wstring::size_type nMax = 3;
+
+    bool bIsNeedDownload = false;
+    if (n1 != std::wstring::npos && n1 < nMax)
+        bIsNeedDownload = true;
+    else if (n2 != std::wstring::npos && n2 < nMax)
+        bIsNeedDownload = true;
+    else if (n3 != std::wstring::npos && n3 < nMax)
+        bIsNeedDownload = true;
+    else if (n4 != std::wstring::npos && n4 < nMax)
+        bIsNeedDownload = true;
+
+    if (!bIsNeedDownload)
+        return L"";
+
+    std::wstring sTempFile = GetTempFile();
+    NSNetwork::NSFileTransport::CFileDownloader oDownloader(sUrl, false);
+    oDownloader.SetFilePath(sTempFile);
+
+    if (oDownloader.DownloadSync())
+        return sTempFile;
+
+    if (NSFile::CFileBinary::Exists(sTempFile))
+        NSFile::CFileBinary::Remove(sTempFile);
+
+    return L"";
 }
