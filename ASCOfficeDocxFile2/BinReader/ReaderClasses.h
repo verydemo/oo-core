@@ -2636,3 +2636,4 @@ public:
 	void Write(NSStringUtils::CStringBuilder*  pCStringWriter, std::wstring sName);
 };
 }
+
