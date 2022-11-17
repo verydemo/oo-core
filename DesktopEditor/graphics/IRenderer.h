@@ -106,6 +106,7 @@ const long c_nParamFlipX		= 0x0001;
 const long c_nParamFlipY		= 0x0002;
 const long c_nFlipNextRotate	= 0x0004;
 const long c_nDarkMode          = 0x0008;
+const long c_nUseDictionaryFonts = 0x0010;
 
 // типы рендерера
 const long c_nUnknownRenderer   = 0x0000;
@@ -223,6 +224,12 @@ public:
     virtual HRESULT CommandDrawTextExCHAR(const LONG& c, const LONG& gid, const double& x, const double& y, const double& w, const double& h) = 0;
     virtual HRESULT CommandDrawTextEx(const std::wstring& bsUnicodeText, const unsigned int* pGids, const unsigned int nGidsCount, const double& x, const double& y, const double& w, const double& h) = 0;
 
+    virtual HRESULT CommandDrawTextCHAR2(unsigned int* codepoints, const unsigned int& codepointscount, const unsigned int& gid, const double& x, const double& y, const double& w, const double& h)
+    {
+        LONG c = (NULL == codepoints) ? 32 : codepoints[0];
+        return CommandDrawTextExCHAR(c, (LONG)gid, x, y, w, h);
+    }
+
 //-------- Маркеры для команд ---------------------------------------------------------------
 	virtual HRESULT BeginCommand(const DWORD& lType)	= 0;
 	virtual HRESULT EndCommand(const DWORD& lType)		= 0;
@@ -326,6 +333,90 @@ public:
 		Never   = 0x03
 	};
 
+	enum EFormatType
+	{
+		None   = 0,
+		Digit  = 1,
+		Letter = 2,
+		Mask   = 3,
+		RegExp = 4
+	};
+
+	class CTextFormFormat
+	{
+	public:
+
+		CTextFormFormat()
+		{
+			m_eFormatType = EFormatType::None;
+		}
+		void SetType(const EFormatType& eType)
+		{
+			m_eFormatType = eType;
+		}
+		const EFormatType& GetType() const
+		{
+			return m_eFormatType;
+		}
+		void AddSymbol(const unsigned int& unCodePoint)
+		{
+			m_vSymbols.push_back(unCodePoint);
+		}
+		unsigned int GetSymbolsCount() const
+		{
+			return m_vSymbols.size();
+		}
+		unsigned int GetSymbol(const unsigned int& unIndex) const
+		{
+			if (unIndex >= m_vSymbols.size())
+				return 0;
+
+			return m_vSymbols.at(unIndex);
+		}
+		void SetValue(const std::wstring& wsValue)
+		{
+			m_wsValue = wsValue;
+		}
+		const std::wstring& GetValue() const
+		{
+			return m_wsValue;
+		}
+		bool IsEmpty() const
+		{
+			return (m_eFormatType == EFormatType::None && !m_vSymbols.size());
+		}
+		bool IsMask() const
+		{
+			return (m_eFormatType == EFormatType::Mask);
+		}
+		bool IsDigit() const
+		{
+			return (m_eFormatType == EFormatType::Digit);
+		}
+		bool IsLetter() const
+		{
+			return (m_eFormatType == EFormatType::Letter);
+		}
+		bool IsRegExp() const
+		{
+			return (m_eFormatType == EFormatType::RegExp);
+		}
+		const std::wstring& GetMask() const
+		{
+			return m_wsValue;
+		}
+		const std::wstring& GetRegExp() const
+		{
+			return m_wsValue;
+		}
+
+	private:
+
+		EFormatType               m_eFormatType;
+		std::vector<unsigned int> m_vSymbols;
+		std::wstring              m_wsValue; // mask or regexp
+	};
+
 	class CTextFormPr
 	{
 	public:
@@ -384,15 +475,26 @@ public:
 		{
 			return m_wsPlaceHolder;
 		}
+		CTextFormFormat* GetFormat()
+		{
+			return &m_oFormat;
+		}
+		const CTextFormFormat* GetFormatPr() const
+		{
+			return &m_oFormat;
+		}
+		
 
 	private:
 
-		std::wstring m_wsTextValue;
-		unsigned int m_unMaxCharacters;
-		bool         m_bComb;
-		bool         m_bAutoFit;
-		bool         m_bMultiLine;
-		std::wstring m_wsPlaceHolder;
+		std::wstring    m_wsTextValue;
+		unsigned int    m_unMaxCharacters;
+		bool            m_bComb;
+		bool            m_bAutoFit;
+		bool            m_bMultiLine;
+		std::wstring    m_wsPlaceHolder;
+		CTextFormFormat m_oFormat;
+
 	};
 	class CDropDownFormPr
 	{
@@ -592,6 +694,67 @@ public:
 		LONG         m_lShiftY;
 		std::wstring m_wsPicturePath;
 	};
+	class CSignatureFormPr
+	{
+	public:
+		void SetName(const std::wstring& wsValue)
+		{
+			m_wsName = wsValue;
+		}
+		void SetContact(const std::wstring& wsValue)
+		{
+			m_wsContact = wsValue;
+		}
+		void SetReason(const std::wstring& wsValue)
+		{
+			m_wsReason = wsValue;
+		}
+		void SetPicturePath(const std::wstring& wsPath)
+		{
+			m_wsPicturePath = wsPath;
+		}
+		void SetCert(const std::wstring& wsValue)
+		{
+			m_wsCert = wsValue;
+		}
+		void SetDate(const bool& bDate)
+		{
+			m_bDate = bDate;
+		}
+
+		const std::wstring& GetName() const
+		{
+			return m_wsName;
+		}
+		const std::wstring& GetContact() const
+		{
+			return m_wsContact;
+		}
+		const std::wstring& GetReason() const
+		{
+			return m_wsReason;
+		}
+		const std::wstring& GetPicturePath() const
+		{
+			return m_wsPicturePath;
+		}
+		const std::wstring& GetCert() const
+		{
+			return m_wsCert;
+		}
+		bool GetDate() const
+		{
+			return m_bDate;
+		}
+
+	private:
+		std::wstring m_wsName;
+		std::wstring m_wsContact;
+		std::wstring m_wsReason;
+		std::wstring m_wsPicturePath;
+		std::wstring m_wsCert;
+		bool         m_bDate;
+	};
 
 public:
 	CFormFieldInfo()
@@ -746,6 +909,10 @@ public:
 	{
 		return (m_nType == 4);
 	}
+	bool IsSignature() const
+	{
+		return (m_nType == 5);
+	}
 	CTextFormPr* GetTextFormPr()
 	{
 		return &m_oTextPr;
@@ -778,6 +945,14 @@ public:
 	{
 		return &m_oPicturePr;
 	}
+	CSignatureFormPr* GetSignatureFormPr()
+	{
+		return &m_oSignaturePr;
+	}
+	const CSignatureFormPr* GetSignaturePr() const
+	{
+		return &m_oSignaturePr;
+	}
 
 
 private:
@@ -799,10 +974,11 @@ private:
 	LONG         m_lShdColor;
 	BYTE         m_nJc;
 
-	CTextFormPr     m_oTextPr;
-	CDropDownFormPr m_oDropDownPr;
-	CCheckBoxFormPr m_oCheckBoxPr;
-	CPictureFormPr  m_oPicturePr;
+	CTextFormPr      m_oTextPr;
+	CDropDownFormPr  m_oDropDownPr;
+	CCheckBoxFormPr  m_oCheckBoxPr;
+	CPictureFormPr   m_oPicturePr;
+	CSignatureFormPr m_oSignaturePr;
 
 };
 

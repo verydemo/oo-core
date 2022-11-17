@@ -36,7 +36,6 @@
 #include <string.h>
 
 #include <boost/shared_array.hpp>
-#include "../Common/common.h"
 
 #include "../XlsFormat/Logic/Biff_structures/ODRAW/OfficeArtFOPTE.h"
 
@@ -281,6 +280,7 @@ public:
 		double			angle = 0;
 		
 		std::wstring	texture_target;
+		std::wstring	picture_target;
 		double			texture_crop[4];
 		bool			texture_crop_enabled = false;
 		_texture_mode	texture_mode;
@@ -301,7 +301,8 @@ public:
 		memset(fill.texture_crop, 0, 4 * sizeof(double));
 		fill.texture_crop_enabled = false;
 		fill.colorsPosition.clear();
-
+		fill.picture_target.clear();
+		fill.texture_target.clear();
 		fill.contrast = fill.brightness = fill.grayscale = boost::none;
 	}
 	struct _arrow
@@ -418,6 +419,7 @@ public:
 		void set_picture_contrast	(int val);
 		void set_picture_biLevel	(int val);
 		void set_picture_transparent(int nColor, const std::wstring & sColor);
+		void set_picture			(const std::wstring & str);
 
         void set_rotation			(double val);
 
@@ -432,6 +434,7 @@ public:
 		void add_fill_colors		(double position, int index, int type);		
 		void set_fill_focus			(int val);
 
+		int get_fill_type			();
 		void clear_fill				();
 
 		void set_line_color			(int nColor, const std::wstring & color);

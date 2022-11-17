@@ -45,7 +45,7 @@
 	{
 		"name": "k",
 		"folder": "../../../../common/",
-		"files": ["StringBuilder.cpp", "Base64.cpp", "Path.cpp", "File.cpp", "Directory.cpp"]
+		"files": ["StringBuilder.cpp", "StringExt.cpp", "Base64.cpp", "Path.cpp", "File.cpp", "Directory.cpp"]
 	},
 	{
 		"name": "of",
@@ -65,7 +65,7 @@
 	{
 		"name": "s",
 		"folder": "../../../../xmlsec/src/src/",
-		"files": ["XmlTransform.cpp", "XmlCertificate.cpp", "OOXMLSigner.cpp", "OOXMLVerifier.cpp", "XmlSigner_openssl.cpp"]
+		"files": ["XmlTransform.cpp", "CertificateCommon.cpp", "OOXMLSigner.cpp", "OOXMLVerifier.cpp"]
 	},
 	{
 		"name": "a",

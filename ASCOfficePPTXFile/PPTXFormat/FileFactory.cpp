@@ -71,7 +71,7 @@
 #include "../../Common/DocxFormat/Source/DocxFormat/Media/JsaProject.h"
 #include "../../Common/DocxFormat/Source/DocxFormat/External/HyperLink.h"
 #include "../../Common/DocxFormat/Source/DocxFormat/UnknowTypeFile.h"
-//
+#include "../../Common/DocxFormat/Source/DocxFormat/CustomXml.h"
 
 
 namespace PPTX
@@ -159,6 +159,12 @@ namespace PPTX
 			return smart_ptr<OOX::File>(new OOX::VbaProject( pMain, filename, filename ));
 		else if (relation.Type() == OOX::FileTypes::JsaProject)
 			return smart_ptr<OOX::File>(new OOX::JsaProject( pMain, filename ));
+		else if (relation.Type() == OOX::FileTypes::CustomXml)
+			return smart_ptr<OOX::File>(new OOX::CCustomXML(pMain, filename, filename));
+		else if (relation.Type() == OOX::FileTypes::ActiveX_xml)
+			return smart_ptr<OOX::File>(new OOX::ActiveX_xml(pMain, filename, filename));
+		else if (relation.Type() == OOX::FileTypes::ActiveX_bin)
+			return smart_ptr<OOX::File>(new OOX::ActiveX_bin(pMain, filename));
 
 		return smart_ptr<OOX::File>(new OOX::UnknowTypeFile(pMain));
 	}

@@ -38,8 +38,8 @@
 #include <xml/simple_xml_writer.h>
 
 #include "office_elements_create.h"
-
 #include "mathvariant.h"
+#include "../datatypes/common_attlists.h"
 
 
 namespace cpdoccore { 
@@ -52,7 +52,7 @@ public:
     static const wchar_t * name;
    
 	static const ElementType type = typeMathElement;
-	static const xml::NodeType xml_type = xml::typeElement;
+
 	
 	virtual void create_child_element(const std::wstring & Ns, const std::wstring & Name) {}
 	virtual void add_child_element(const office_element_ptr & child_element) {}
@@ -60,8 +60,8 @@ public:
 	virtual void serialize(std::wostream & _Wostream) {}
 
 
-	CPDOCCORE_DEFINE_VISITABLE();
-    CPDOCCORE_OFFICE_DOCUMENT_IMPL_NAME_FUNCS_
+	
+
 
     friend class odf_document;
 };
@@ -72,10 +72,10 @@ class office_math : public office_element_impl<office_math>
 public:
     static const wchar_t * ns;
     static const wchar_t * name;
-    static const xml::NodeType xml_type = xml::typeElement;
+
     static const ElementType type = typeMath;
 
-	CPDOCCORE_DEFINE_VISITABLE();
+	
 	friend class odf_document;
 
 	virtual void create_child_element(const std::wstring & Ns, const std::wstring & Name);
@@ -94,11 +94,11 @@ class math_semantics : public office_math_element
 public:
     static const wchar_t * ns;
     static const wchar_t * name;
-    static const xml::NodeType xml_type = xml::typeElement;
+
     static const ElementType type = typeMathSemantics;	
 
-    CPDOCCORE_DEFINE_VISITABLE();
-    CPDOCCORE_OFFICE_DOCUMENT_IMPL_NAME_FUNCS_
+    
+
  private:
 	virtual void create_child_element(const std::wstring & Ns, const std::wstring & Name);
 	virtual void add_child_element(const office_element_ptr & child_element);
@@ -116,20 +116,23 @@ class math_annotation : public office_math_element
 public:
     static const wchar_t * ns;
     static const wchar_t * name;
-    static const xml::NodeType xml_type = xml::typeElement;
+
     static const ElementType type = typeMathAnnotation;
 
-    CPDOCCORE_DEFINE_VISITABLE();
-    CPDOCCORE_OFFICE_DOCUMENT_IMPL_NAME_FUNCS_
-private:
+	_CP_OPT(std::wstring)		encoding_;
+
+ private:
 	virtual void create_child_element(const std::wstring & Ns, const std::wstring & Name);
 	virtual void add_child_element(const office_element_ptr & child_element);
 
 	virtual void serialize(std::wostream & _Wostream);
 
+    virtual void add_text(const std::wstring& Text);
+
+    odf_types::common_math_style_attlist	common_attlist_;
+
     office_element_ptr_array	content_;	
 	_CP_OPT(std::wstring)		text_;
-	_CP_OPT(std::wstring)		encoding_;
 };
 
 CP_REGISTER_OFFICE_ELEMENT2(math_annotation);
@@ -139,11 +142,11 @@ class math_annotation_xml : public office_math_element
 public:
     static const wchar_t * ns;
     static const wchar_t * name;
-    static const xml::NodeType xml_type = xml::typeElement;
+
     static const ElementType type = typeMathAnnotationXml;
 
-    CPDOCCORE_DEFINE_VISITABLE();
-    CPDOCCORE_OFFICE_DOCUMENT_IMPL_NAME_FUNCS_
+    
+
 private:
 	virtual void create_child_element(const std::wstring & Ns, const std::wstring & Name);
 	virtual void add_child_element(const office_element_ptr & child_element);

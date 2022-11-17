@@ -77,13 +77,11 @@ public:
     pivot_cache_content();
     static _CP_PTR(pivot_cache_content) create();
 
-    std::wostream	& definitions() { return definitions_; }
-	std::wostream	& records()		{ return records_; }
-	rels			& get_rels()	{ return definitions_rels_file_->get_rels(); }
-
-    std::wstring	str_d() { return definitions_.str(); }
-    std::wstring	str_r() { return records_.str(); }
+    std::wstringstream	& definitions() { return definitions_; }
+	std::wstringstream	& records()		{ return records_; }
 	
+	rels & get_rels() { return definitions_rels_file_->get_rels(); }
+
 	friend class	xl_pivot_cache_files;
 private:
     std::wstringstream	records_;
@@ -416,9 +414,6 @@ private:
     xlsx_content_types_file content_type_;
     xl_files				xl_files_;
 	xl_customXml_files		customXml_files_;
-    docProps_files			docProps_files_;
-    rels_files				rels_files_;
-
 };
 
 
